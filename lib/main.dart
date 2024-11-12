@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:juragan_nelayan/menu.dart';
+import 'package:juragan_nelayan/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,9 +29,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSwatch(
-              primarySwatch: Colors.deepPurple,
-        ).copyWith(secondary: Colors.deepPurple[400]),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: MyHomePage(),

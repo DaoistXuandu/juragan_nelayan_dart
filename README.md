@@ -101,3 +101,386 @@ ScaffoldMessenger.of(context)
 );
 ```
 dimana sesuai dengan `button` yang ditekan akan ditampilkan informasi yang relevan.
+
+## Tugas 8
+### Apa kegunaan const di Flutter? Jelaskan apa keuntungan ketika menggunakan const pada kode Flutter. Kapan sebaiknya kita menggunakan const, dan kapan sebaiknya tidak digunakan?
+Dalam Flutter, `const` digunakan untuk mendefinisikan widget atau objek yang bersifat konstan atau tidak akan berubah setelah diciptakan. Keuntungan utama menggunakan `const` adalah efisiensi memori dan performa, karena Flutter hanya akan membuat satu instance dari objek `const` yang sama sehingga mengurangi alokasi memori. Widget yang bersifat `const` juga tidak perlu di-render ulang saat aplikasi mengalami perubahan state, sehingga aplikasi berjalan lebih efisien.
+
+Waktu yang tepat untuk menggunakan `const` adalah pada objek atau widget yang nilainya tetap, seperti teks statis, ikon, atau padding yang tidak akan berubah. Sehingga, apabila terdapat widget yang bergantung pada data atau state dinamis bukanlah implementasi yang baik untuk menggunakan `const`, karena ini akan menyebabkan error atau masalah rendering. Dengan menggunakan `const` secara tepat, aplikasi dapat berjalan lebih efisien dan responsif.
+
+### Jelaskan dan bandingkan penggunaan Column dan Row pada Flutter. Berikan contoh implementasi dari masing-masing layout widget ini!
+
+Dalam Flutter, Column dan Row adalah widget layout yang digunakan untuk menyusun widget lain secara berurutan. Keduanya memiliki fungsi yang mirip namun dengan arah yang berbeda: Column menyusun widget secara vertikal (dari atas ke bawah), sementara Row menyusun widget secara horizontal (dari kiri ke kanan). Baik Column maupun Row dapat digunakan untuk mengatur tata letak widget dalam aplikasi dengan cara yang fleksibel dan responsif.
+
+Contoh penggunaan Row dapat terlihat di tugas 8 pada kode ini
+```
+   Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InfoCard(title: 'NPM', content: npm),
+                InfoCard(title: 'Name', content: name),
+                InfoCard(title: 'Class', content: className),
+              ],
+            ),
+```
+
+Contoh penggunaan Column dapat terlihat di tugas 8 pada kode ini
+```
+Column(
+   // Menyusun ikon dan teks di tengah kartu.
+   mainAxisAlignment: MainAxisAlignment.center,
+   children: [
+      Icon(
+      item.icon,
+      color: Colors.white,
+      size: 30.0,
+      ),
+      const Padding(padding: EdgeInsets.all(3)),
+      Text(
+      item.name,
+      textAlign: TextAlign.center,
+      style: const TextStyle(color: Colors.white),
+      ),
+   ],
+),
+```
+
+### Sebutkan apa saja elemen input yang kamu gunakan pada halaman form yang kamu buat pada tugas kali ini. Apakah terdapat elemen input Flutter lain yang tidak kamu gunakan pada tugas ini? Jelaskan!
+
+Pada berkas `moodentry_form.dary` pada tugas 8, elemen input yang digunakan adalah:
+
+1. TextFormField
+2. ElevatedButton (Asumsi bahwa tombol merupakan input 'tekan' dari user)
+
+Elemen Input Flutter Lain yang Tidak Digunakan:
+1. TextField
+2. DropdownButtonFormField
+3. Checkbox
+4. Switch
+5. Radio
+6. Slider
+7. DatePicker
+8. TimePicker
+9. RangeSlider
+10. Autocomplete
+11. Stepper
+12. Slider Adaptive
+13. CupertinoTextField
+14. CupertinoSwitch
+15. File Picker
+16. ImagePicker
+
+### Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?
+
+Pengaturan tema yang konsisten untuk seluruh aplikasi dilakukan menggunakan widget ThemeData pada root aplikasi, umumnya dalam widget MaterialApp. Dengan mendefinisikan warna, gaya teks, dan parameter lainnya di ThemeData, kita dapat memastikan tampilan yang seragam pada semua bagian aplikasi. Tema dapat diterapkan dengan mendefinisikan primaryColor, colorScheme, textTheme, dan berbagai parameter lain untuk mendefinisikan elemen UI seperti AppBar, tombol, dan input field.
+
+Pada tugas ini hal ini dapat terlihat pada potongan kode berikut:
+```
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+```
+
+###  Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?
+
+- Membuat widget left drawer pada berkas lib/widgets/left_drawer.dart Dimana memuat routing untuk ke halaman utama dan juga ke halaman tambah item
+```
+class LeftDrawer extends StatelessWidget {
+  const LeftDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            // TODO: Bagian drawer header
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: const Column(
+              children: [
+                Text(
+                  'Juragan Nelayan',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Padding(padding: EdgeInsets.all(8)),
+                Text(
+                  "Lihat data ikanmu!",
+                  // TODO: Tambahkan gaya teks dengan center alignment, font ukuran 15, warna putih, dan weight biasa
+                  textAlign: TextAlign.center, // Center alignment
+                  style: TextStyle(
+                    fontSize: 15, // Font size 15
+                    color: Colors.white, // White color
+                    fontWeight: FontWeight.normal, // Normal font weight
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // TODO: Bagian routing
+          ListTile(
+            leading: const Icon(Icons.home_outlined),
+            title: const Text('Halaman Utama'),
+            // Bagian redirection ke MyHomePage
+            onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyHomePage(),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.mood),
+            title: const Text('Tambah Item'),
+            // Bagian redirection ke MoodEntryFormPage
+            onTap: () {
+              /*
+                TODO: Buatlah routing ke MoodEntryFormPage di sini,
+                setelah halaman MoodEntryFormPage sudah dibuat.
+                */
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MoodEntryFormPage(),
+                  ));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+- Membuat berkas `moodentry_form.dart` yang mana menjadi halaman form input data
+```
+class MoodEntryFormPage extends StatefulWidget {
+  const MoodEntryFormPage({super.key});
+
+  @override
+  State<MoodEntryFormPage> createState() => _MoodEntryFormPageState();
+}
+
+class _MoodEntryFormPageState extends State<MoodEntryFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _name = "";
+  String _description = "";
+  int _amount = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text(
+            'Form Tambah Item Kamu Hari ini',
+          ),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
+      ),
+      // TODO: Tambahkan drawer yang sudah dibuat di sini
+      body: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Name",
+                  labelText: "Name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _name = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Nama tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Amount",
+                  labelText: "Amount",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _amount = int.tryParse(value!) ?? 0;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Amount tidak boleh kosong!";
+                  }
+                  if (int.tryParse(value) == null) {
+                    return "Amount harus berupa angka!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Description",
+                  labelText: "Description",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (String? value) {
+                  setState(() {
+                    _description = value!;
+                  });
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return "Description tidak boleh kosong!";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all(
+                        Theme.of(context).colorScheme.primary),
+                  ),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Item berhasil tersimpan'),
+                            content: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // TODO: Munculkan value-value lainnya
+                                  Text('Name: $_name'),
+                                  Text('Amount: $_amount'),
+                                  Text('Description: $_description'),
+                                ],
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  _formKey.currentState!.reset();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: const Text(
+                    "Save",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+- Menambahkan drawer pada halaman utama dan input
+```
+drawer: const LeftDrawer(),
+```
+
+- Memunculkan data setelah hasil input
+```
+onPressed: () {
+   if (_formKey.currentState!.validate()) {
+      showDialog(
+      context: context,
+      builder: (context) {
+         return AlertDialog(
+            title: const Text('Item berhasil tersimpan'),
+            content: SingleChildScrollView(
+            child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                  // TODO: Munculkan value-value lainnya
+                  Text('Name: $_name'),
+                  Text('Amount: $_amount'),
+                  Text('Description: $_description'),
+               ],
+            ),
+            ),
+            actions: [
+            TextButton(
+               child: const Text('OK'),
+               onPressed: () {
+                  Navigator.pop(context);
+                  _formKey.currentState!.reset();
+               },
+            ),
+            ],
+         );
+      },
+      );
+   }
+}
+```
+
+- Membuat routing dari tombol add pada halaman utama menuju halaman input
+```
+if (item.name == "Tambah Item") {
+   Navigator.push(
+      context,
+      MaterialPageRoute(
+         builder: (context) => const MoodEntryFormPage()));
+}
+```
+
+
